@@ -3,6 +3,19 @@ import Layout from "../layouts/Layout.astro";
 
 const widgets = [
   {
+    id: 'url-shortener',
+    name: 'URL Shortener',
+    description: 'Create short links and QR codes with history tracking. Perfect for social media and sharing.',
+    url: '/url-shortener',
+    background: 'from-cyan-400 via-blue-400 to-purple-500',
+    preview: {
+      title: '🔗',
+      subtitle: 'Short Links'
+    },
+    buttonColor: 'cyan',
+    badge: '✨ New'
+  },
+  {
     id: 'birthday',
     name: 'Birthday Widget',
     description: 'Celebrate birthdays with style! Customizable themes, animations, and confetti effects.',
@@ -12,8 +25,7 @@ const widgets = [
       title: 'Happy Birthday!',
       icons: '🎂 🎈 🎁'
     },
-    buttonColor: 'purple',
-    badge: '✨ New'
+    buttonColor: 'purple'
   },
   {
     id: 'pomodoro',
