@@ -3,6 +3,31 @@ import Layout from "../layouts/Layout.astro";
 
 const widgets = [
   {
+    id: 'stock-analyst',
+    name: 'Stock Analyst',
+    description: 'Modern stock analysis with real-time data, AI-powered insights, and predictive forecasting.',
+    url: '/stock-analyst',
+    background: 'from-blue-500 via-purple-500 to-indigo-600',
+    preview: {
+      title: '📈 $182.34',
+      subtitle: 'AAPL +1.36%'
+    },
+    buttonColor: 'blue',
+    badge: '🚀 New'
+  }, {
+    id: 'todo',
+    name: 'Todo Widget',
+    description: 'Modern task management with Kanban and List views. Supports drag-and-drop, labels, priorities, subtasks, and dark mode.',
+    url: '/todo',
+    background: 'from-slate-400 via-gray-400 to-zinc-400',
+    preview: {
+      title: '📝 Tasks',
+      subtitle: 'Todo Manager'
+    },
+    buttonColor: 'slate',
+    badge: '🆕 New'
+  },
+  {
     id: 'birthday',
     name: 'Birthday Widget',
     description: 'Celebrate birthdays with style! Customizable themes, animations, and confetti effects.',
@@ -75,6 +100,43 @@ const widgets = [
     },
     buttonColor: 'orange',
     badge: '🔥 New'
+
+    id: 'mongodb-aggregation',
+    name: 'MongoDB Pipeline Builder',
+    description: 'Visual tool for building MongoDB aggregation pipelines with drag-and-drop stages.',
+    url: '/mongodb-aggregation',
+    background: 'from-green-500 to-teal-600',
+    preview: {
+      title: '🍃',
+      subtitle: 'MongoDB Pipeline'
+    },
+    buttonColor: 'green',
+    badge: '🆕 New'
+  },{
+    id: 'sql-visualizer',
+    name: 'SQL Visualizer',
+    description: 'Visualize SQL queries as interactive flow diagrams with tables, joins, and filters.',
+    url: '/sql-visualizer',
+    background: 'from-cyan-400 to-blue-600',
+    preview: {
+      title: '🔍',
+      subtitle: 'SQL Flow'
+    },
+    buttonColor: 'cyan',
+    badge: '✨ New'
+  },
+  {
+    id: 'markdown-viewer',
+    name: 'MarkdownViewer Component',
+    description: 'Reusable React component for rendering Markdown with code highlighting, math formulas, Mermaid diagrams, and Chart.js integration.',
+    url: '/markdown-viewer',
+    background: 'from-purple-400 to-indigo-600',
+    preview: {
+      title: '📝',
+      subtitle: 'Markdown Renderer'
+    },
+    buttonColor: 'purple',
+    badge: '🆕 New'
   }
 ];
 ---
@@ -116,7 +178,14 @@ const widgets = [
               <div class="flex space-x-2">
                 <a 
                   href={widget.url}
-                  class={`bg-${widget.buttonColor}-500 text-white px-4 py-2 rounded-lg hover:bg-${widget.buttonColor}-600 transition-colors`}
+                  class={
+                    widget.buttonColor === 'purple' ? 'bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors' :
+                    widget.buttonColor === 'red' ? 'bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors' :
+                    widget.buttonColor === 'yellow' ? 'bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors' :
+                    widget.buttonColor === 'green' ? 'bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors' :
+                    widget.buttonColor === 'indigo' ? 'bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors' :
+                    'bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors'
+                  }
                 >
                   View Widget
                 </a>
