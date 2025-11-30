@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 interface CanvasBackgroundProps {
   showFireworks?: boolean;
@@ -6,6 +6,7 @@ interface CanvasBackgroundProps {
 
 const CanvasBackground: React.FC<CanvasBackgroundProps> = ({ showFireworks = true }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,12 +23,47 @@ const CanvasBackground: React.FC<CanvasBackgroundProps> = ({ showFireworks = tru
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
+    // Mouse event handlers
+    const handleMouseMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      setMousePosition({
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      });
+    };
+
+    const handleMouseClick = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+      
+      // Create firework at click position
+      createFirework(clickX, clickY);
+    };
+
+    // Add mouse event listeners
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('click', handleMouseClick);
+
     // Firework particles
     const particles: Array<{
       x: number;
       y: number;
       vx: number;
       vy: number;
+      alpha: number;
+      color: string;
+      life: number;
+      maxLife: number;
+      attractToMouse?: boolean;
+    }> = [];
+
+    // Mouse attraction particles
+    const mouseParticles: Array<{
+      x: number;
+      y: number;
+      targetX: number;
+      targetY: number;
       alpha: number;
       color: string;
       life: number;
@@ -51,8 +87,27 @@ const CanvasBackground: React.FC<CanvasBackgroundProps> = ({ showFireworks = tru
           alpha: 1,
           color: colors[Math.floor(Math.random() * colors.length)],
           life: 0,
-          maxLife: 60 + Math.random() * 40
+          maxLife: 60 + Math.random() * 40,
+          attractToMouse: false
         });
+      }
+    };
+
+    // Create mouse attraction particles
+    const createMouseParticles = () => {
+      if (mouseParticles.length < 5) {
+        for (let i = 0; i < 3; i++) {
+          mouseParticles.push({
+            x: mousePosition.x + (Math.random() - 0.5) * 100,
+            y: mousePosition.y + (Math.random() - 0.5) * 100,
+            targetX: mousePosition.x,
+            targetY: mousePosition.y,
+            alpha: 0.6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            life: 0,
+            maxLife: 120
+          });
+        }
       }
     };
 
@@ -94,7 +149,9 @@ const CanvasBackground: React.FC<CanvasBackgroundProps> = ({ showFireworks = tru
     // Animation loop
     let animationId: number;
     let lastFireworkTime = 0;
+    let lastMouseParticleTime = 0;
     const fireworkInterval = 2000; // 2 seconds
+    const mouseParticleInterval = 100; // 100ms
 
     const animate = (currentTime: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -105,12 +162,51 @@ const CanvasBackground: React.FC<CanvasBackgroundProps> = ({ showFireworks = tru
       drawCake(80, 80, 0.4);
       drawCake(canvas.width - 80, 80, 0.4);
 
-      // Create fireworks periodically
+      // Create mouse attraction particles
+      if (currentTime - lastMouseParticleTime > mouseParticleInterval) {
+        createMouseParticles();
+        lastMouseParticleTime = currentTime;
+      }
+
+      // Create automatic fireworks periodically
       if (showFireworks && currentTime - lastFireworkTime > fireworkInterval) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * (canvas.height * 0.5) + 50;
         createFirework(x, y);
         lastFireworkTime = currentTime;
+      }
+
+      // Update and draw mouse attraction particles
+      for (let i = mouseParticles.length - 1; i >= 0; i--) {
+        const particle = mouseParticles[i];
+        
+        // Move particle towards mouse position
+        const dx = mousePosition.x - particle.x;
+        const dy = mousePosition.y - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 5) {
+          particle.x += dx * 0.1;
+          particle.y += dy * 0.1;
+        }
+        
+        particle.life++;
+        particle.alpha = 0.6 - (particle.life / particle.maxLife) * 0.6;
+
+        // Remove dead particles
+        if (particle.life >= particle.maxLife) {
+          mouseParticles.splice(i, 1);
+          continue;
+        }
+
+        // Draw mouse particle
+        ctx.save();
+        ctx.globalAlpha = particle.alpha;
+        ctx.fillStyle = particle.color;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
 
       // Update and draw firework particles
@@ -147,14 +243,16 @@ const CanvasBackground: React.FC<CanvasBackgroundProps> = ({ showFireworks = tru
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('click', handleMouseClick);
       cancelAnimationFrame(animationId);
     };
-  }, [showFireworks]);
+  }, [showFireworks, mousePosition]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none"
+      className="absolute inset-0 cursor-pointer"
       style={{ zIndex: 1 }}
     />
   );
