@@ -74,6 +74,56 @@ const widgets = [
       subtitle: 'Reader'
     },
     buttonColor: 'indigo'
+  },
+  {
+    id: 'feed',
+    name: 'RSS Feed Reader',
+    description: 'Stay updated with the latest news from your favorite RSS feeds.',
+    url: '/feed',
+    background: 'from-orange-400 to-red-500',
+    preview: {
+      title: '📰',
+      subtitle: 'RSS Feed'
+    },
+    buttonColor: 'orange',
+    badge: '🔥 New'
+
+    id: 'mongodb-aggregation',
+    name: 'MongoDB Pipeline Builder',
+    description: 'Visual tool for building MongoDB aggregation pipelines with drag-and-drop stages.',
+    url: '/mongodb-aggregation',
+    background: 'from-green-500 to-teal-600',
+    preview: {
+      title: '🍃',
+      subtitle: 'MongoDB Pipeline'
+    },
+    buttonColor: 'green',
+    badge: '🆕 New'
+  },{
+    id: 'sql-visualizer',
+    name: 'SQL Visualizer',
+    description: 'Visualize SQL queries as interactive flow diagrams with tables, joins, and filters.',
+    url: '/sql-visualizer',
+    background: 'from-cyan-400 to-blue-600',
+    preview: {
+      title: '🔍',
+      subtitle: 'SQL Flow'
+    },
+    buttonColor: 'cyan',
+    badge: '✨ New'
+  },
+  {
+    id: 'markdown-viewer',
+    name: 'MarkdownViewer Component',
+    description: 'Reusable React component for rendering Markdown with code highlighting, math formulas, Mermaid diagrams, and Chart.js integration.',
+    url: '/markdown-viewer',
+    background: 'from-purple-400 to-indigo-600',
+    preview: {
+      title: '📝',
+      subtitle: 'Markdown Renderer'
+    },
+    buttonColor: 'purple',
+    badge: '🆕 New'
   }
 ];
 ---
@@ -115,7 +165,14 @@ const widgets = [
               <div class="flex space-x-2">
                 <a 
                   href={widget.url}
-                  class={`bg-${widget.buttonColor}-500 text-white px-4 py-2 rounded-lg hover:bg-${widget.buttonColor}-600 transition-colors`}
+                  class={
+                    widget.buttonColor === 'purple' ? 'bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors' :
+                    widget.buttonColor === 'red' ? 'bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors' :
+                    widget.buttonColor === 'yellow' ? 'bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors' :
+                    widget.buttonColor === 'green' ? 'bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors' :
+                    widget.buttonColor === 'indigo' ? 'bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors' :
+                    'bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors'
+                  }
                 >
                   View Widget
                 </a>
