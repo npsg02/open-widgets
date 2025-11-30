@@ -89,6 +89,17 @@ const widgets = [
     buttonColor: 'indigo'
   },
   {
+    id: 'feed',
+    name: 'RSS Feed Reader',
+    description: 'Stay updated with the latest news from your favorite RSS feeds.',
+    url: '/feed',
+    background: 'from-orange-400 to-red-500',
+    preview: {
+      title: '📰',
+      subtitle: 'RSS Feed'
+    },
+    buttonColor: 'orange',
+    badge: '🔥 New'
 
     id: 'mongodb-aggregation',
     name: 'MongoDB Pipeline Builder',
@@ -113,7 +124,19 @@ const widgets = [
     },
     buttonColor: 'cyan',
     badge: '✨ New'
-
+  },
+  {
+    id: 'markdown-viewer',
+    name: 'MarkdownViewer Component',
+    description: 'Reusable React component for rendering Markdown with code highlighting, math formulas, Mermaid diagrams, and Chart.js integration.',
+    url: '/markdown-viewer',
+    background: 'from-purple-400 to-indigo-600',
+    preview: {
+      title: '📝',
+      subtitle: 'Markdown Renderer'
+    },
+    buttonColor: 'purple',
+    badge: '🆕 New'
   }
 ];
 ---

@@ -1,0 +1,8 @@
+---
+import Layout from "../layouts/Layout.astro";
+import FeedWidget from "../components/react/feed";
+---
+
+<Layout title="RSS Feed Reader Widget">
+  <FeedWidget client:only="react" />
+</Layout>
