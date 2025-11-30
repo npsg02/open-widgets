@@ -1,0 +1,8 @@
+---
+import Layout from "../layouts/Layout.astro";
+import URLShortener from "../components/svelte/URLShortener.svelte";
+---
+
+<Layout title="URL Shortener Widget">
+  <URLShortener client:only="svelte" />
+</Layout>
